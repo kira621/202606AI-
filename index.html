@@ -17,6 +17,7 @@
       --rose: #df5b67;
       --violet: #6d5bd0;
       --green: #2e9d66;
+      --gold: #b7791f;
       --shadow: 0 18px 50px rgba(29, 41, 57, 0.12);
       --radius: 8px;
     }
@@ -33,6 +34,7 @@
       margin: 0;
       color: var(--ink);
       background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0 18%, transparent 18% 100%),
         linear-gradient(90deg, rgba(49, 87, 213, 0.05) 1px, transparent 1px),
         linear-gradient(0deg, rgba(15, 159, 143, 0.05) 1px, transparent 1px),
         var(--wash);
@@ -143,6 +145,14 @@
       gap: 20px;
       overflow: hidden;
       position: relative;
+    }
+
+    .hero-main::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 7px;
+      background: linear-gradient(90deg, var(--blue), var(--teal), var(--orange), var(--rose));
     }
 
     .hero-copy {
@@ -530,6 +540,45 @@
       font-weight: 900;
     }
 
+    .persona-card {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: linear-gradient(135deg, #fff, #f7fbff);
+    }
+
+    .persona-code {
+      min-width: 78px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--violet);
+      border-radius: 8px;
+      font-size: 24px;
+      font-weight: 950;
+      letter-spacing: 0;
+    }
+
+    .persona-title {
+      display: block;
+      color: var(--ink);
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .persona-subtitle {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
     .result-copy {
       margin: 16px 0 0;
       color: #344054;
@@ -556,6 +605,35 @@
       display: grid;
       gap: 12px;
       margin-top: 16px;
+    }
+
+    .radar-card {
+      min-height: 252px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, #fff, #f8fbff);
+      overflow: hidden;
+    }
+
+    .radar-card svg {
+      width: min(100%, 320px);
+      height: auto;
+      display: block;
+    }
+
+    .radar-label {
+      fill: #344054;
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .radar-score {
+      fill: var(--blue);
+      font-size: 10px;
+      font-weight: 900;
     }
 
     .bar-row {
@@ -599,7 +677,7 @@
     }
 
     .role-list,
-    .action-list {
+    .persona-list {
       display: grid;
       gap: 10px;
       margin: 0;
@@ -608,7 +686,7 @@
     }
 
     .role-list li,
-    .action-list li {
+    .persona-list li {
       display: grid;
       gap: 4px;
       border: 1px solid var(--line);
@@ -618,13 +696,13 @@
     }
 
     .role-list strong,
-    .action-list strong {
+    .persona-list strong {
       color: var(--ink);
       font-size: 14px;
     }
 
     .role-list span,
-    .action-list span {
+    .persona-list span {
       color: var(--muted);
       font-size: 13px;
     }
@@ -758,6 +836,10 @@
         grid-template-columns: 1fr;
       }
 
+      .persona-card {
+        grid-template-columns: 1fr;
+      }
+
       .question {
         grid-template-columns: 1fr;
       }
@@ -796,7 +878,7 @@
       <div class="pill-row" aria-label="测评标签">
         <span class="pill">24 题</span>
         <span class="pill">6 类岗位</span>
-        <span class="pill">4 维能力</span>
+        <span class="pill">5 维能力</span>
       </div>
     </nav>
 
@@ -804,7 +886,7 @@
       <div class="hero-main">
         <div class="hero-copy">
           <h1 id="heroTitle">测出你更适合的 AI 产品方向</h1>
-          <p class="lead">面向还没毕业、准备做 AI 产品项目和求职定位的同学。结果会给出岗位方向、匹配得分、判断原因和下一步项目建议。</p>
+          <p class="lead">面向还没毕业、准备做 AI 产品项目和求职定位的同学。结果会给出岗位方向、匹配得分、产品人格、判断原因和轻量点评。</p>
           <div class="hero-actions">
             <a class="button" href="#assessment">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -838,9 +920,9 @@
           <div class="metric"><b>16</b><span>能力题</span></div>
           <div class="metric"><b>8</b><span>倾向题</span></div>
           <div class="metric"><b>100</b><span>岗位匹配分</span></div>
-          <div class="metric"><b>30</b><span>天行动建议</span></div>
+          <div class="metric"><b>5</b><span>维能力图</span></div>
         </div>
-        <p class="source-note">依据课程中的 AI 产品分类、AI 产品经理工作内容和四维自评框架设计。</p>
+        <p class="source-note">依据课程中的 AI 产品分类、AI 产品经理工作内容和五维自评框架设计。</p>
       </aside>
     </section>
 
@@ -917,7 +999,8 @@
           </div>
         </div>
         <aside class="panel">
-          <p class="mini-title">能力维度</p>
+          <p class="mini-title">五维能力图</p>
+          <div class="radar-card" id="radarChart" aria-label="五维能力雷达图"></div>
           <div class="bars" id="dimensionBars"></div>
           <p class="mini-title" style="margin-top:22px;">岗位排序</p>
           <ul class="role-list" id="roleRanking"></ul>
@@ -925,8 +1008,16 @@
       </div>
       <div class="result-grid" style="margin-top:16px;">
         <div class="panel">
-          <p class="mini-title">30 天项目建议</p>
-          <ul class="action-list" id="actionList"></ul>
+          <p class="mini-title">产品人格角色</p>
+          <div class="persona-card">
+            <div class="persona-code" id="personaCode">INTJ</div>
+            <div>
+              <strong class="persona-title" id="personaTitle">系统战略家</strong>
+              <span class="persona-subtitle" id="personaSubtitle">求职定位版，不是心理学诊断</span>
+            </div>
+          </div>
+          <p class="result-copy" id="personaDescription"></p>
+          <ul class="persona-list" id="personaList"></ul>
         </div>
         <aside class="panel">
           <p class="mini-title">投递关键词</p>
@@ -936,26 +1027,26 @@
     </section>
 
     <section class="rules" id="rules" aria-labelledby="rulesTitle">
-      <details open>
+      <details>
         <summary id="rulesTitle">测评题目与计分规则</summary>
         <div class="rules-body">
-          <p>题目由两部分组成：16 道能力量表题评估四个产品能力维度，8 道二选一倾向题生成类似 MBTI 的方向代码。岗位结果不是性格标签，而是用于校招项目选题、JD 匹配和简历证据准备。</p>
+          <p>题目由两部分组成：16 道能力量表题评估五个产品能力维度，8 道二选一倾向题生成类似 INTJ、ENTJ 的产品人格代码。岗位结果不是性格标签，而是用于校招项目选题、JD 匹配和简历证据准备。</p>
           <div class="rules-grid">
             <div class="rule-box">
               <h3>能力分</h3>
-              <p>每题 1-5 分，按题目权重计入用户/业务、技术/工具、数据/评测、表达/推进四个维度。维度分 = 加权得分 / 加权满分 × 100。</p>
+              <p>每题 1-5 分，按题目权重计入用户/业务、技术/工具、数据/评测、表达/推进、结构/落地五个维度。维度分 = 加权得分 / 加权满分 × 100。</p>
             </div>
             <div class="rule-box">
-              <h3>倾向代码</h3>
-              <p>B/T 判断业务场景或技术模型倾向；D/P 判断数据证据或沟通推进倾向；S/N 判断结构交付或探索试错倾向；G/F 判断商业结果或底座质量倾向。</p>
+              <h3>产品人格</h3>
+              <p>I/E 判断独立深潜或外部推进倾向；N/S 判断探索试错或结构交付倾向；T/F 判断证据理性或人群共情倾向；J/P 判断收束执行或开放迭代倾向。</p>
             </div>
             <div class="rule-box">
               <h3>岗位匹配分</h3>
-              <p>每个岗位有一组权重，例如模型产品更看重技术和数据，解决方案更看重表达推进和业务理解。岗位分 = 各维度分 × 岗位权重后求和。</p>
+              <p>每个岗位有一组权重，例如模型产品更看重技术和数据，解决方案更看重表达推进和业务理解。岗位分 = 五维能力分与倾向分加权后求和。</p>
             </div>
             <div class="rule-box">
               <h3>结果解释</h3>
-              <p>系统展示得分最高的主推岗位、前 3 个备选岗位，并根据你的高分维度、低分缺口和倾向代码生成原因与项目建议。</p>
+              <p>系统展示得分最高的主推岗位、前 3 个备选岗位，并根据你的高分维度、低分缺口和产品人格生成原因与泛娱乐点评。</p>
             </div>
           </div>
           <table class="mapping-table" aria-label="岗位映射规则">
@@ -1011,14 +1102,16 @@
       business: "用户/业务理解",
       tech: "技术/工具舒适度",
       data: "数据/评测能力",
-      communication: "表达与推进"
+      communication: "表达与推进",
+      execution: "结构/落地能力"
     };
 
     const dimColors = {
       business: "orange",
       tech: "",
       data: "teal",
-      communication: "rose"
+      communication: "rose",
+      execution: "green"
     };
 
     const questions = [
@@ -1048,7 +1141,7 @@
         type: "likert",
         text: "看到身边工具不好用，我会自然想改流程、画原型或写一页方案。",
         tags: ["原型", "方案"],
-        dims: { business: 0.7, tech: 0.3 }
+        dims: { business: 0.55, execution: 0.3, tech: 0.15 }
       },
       {
         id: "q05",
@@ -1076,7 +1169,7 @@
         type: "likert",
         text: "我愿意用 Cursor、Codex、DeepSeek、ChatGPT 等工具搭一个可演示 Demo。",
         tags: ["Demo", "工具"],
-        dims: { tech: 0.8, communication: 0.2 }
+        dims: { tech: 0.55, execution: 0.3, communication: 0.15 }
       },
       {
         id: "q09",
@@ -1097,7 +1190,7 @@
         type: "likert",
         text: "我能耐心做 bad case 归因，把问题拆成输入、模型、提示词、业务规则。",
         tags: ["评测", "归因"],
-        dims: { data: 0.65, tech: 0.35 }
+        dims: { data: 0.5, tech: 0.25, execution: 0.25 }
       },
       {
         id: "q12",
@@ -1125,14 +1218,14 @@
         type: "likert",
         text: "多方意见冲突时，我愿意推动大家形成下一步，而不是等别人安排。",
         tags: ["协作", "推进"],
-        dims: { communication: 0.85, business: 0.15 }
+        dims: { communication: 0.55, execution: 0.3, business: 0.15 }
       },
       {
         id: "q16",
         type: "likert",
         text: "我能接受现场沟通、方案汇报和被连续追问细节。",
         tags: ["汇报", "抗压"],
-        dims: { communication: 0.8, data: 0.2 }
+        dims: { communication: 0.65, execution: 0.2, data: 0.15 }
       },
       {
         id: "q17",
@@ -1200,6 +1293,153 @@
       }
     ];
 
+    const personas = {
+      INTJ: {
+        title: "系统战略家",
+        subtitle: "先建模型，再做选择",
+        description: "你适合把复杂方向拆成结构、指标和路线图，做岗位选择时很看重长期壁垒。",
+        notes: [
+          ["结果说明", "适合偏平台、模型、评测、策略型应用产品，优势是能把混乱问题整理成可执行框架。"],
+          ["娱乐点评", "像随身带着一张产品作战地图，别人还在讨论要不要做，你已经在想第二版怎么扩展。"]
+        ]
+      },
+      ENTJ: {
+        title: "战役指挥官",
+        subtitle: "目标感强，喜欢推进",
+        description: "你适合目标明确、需要跨团队推进的方向，越是有指标和 deadline 越容易进入状态。",
+        notes: [
+          ["结果说明", "适合解决方案、增长商业化、产品运营推进等方向，优势是能把资源和目标拉到一条线上。"],
+          ["娱乐点评", "会议室里最容易把白板写满的人，顺手还能给每个人分一个下一步。"]
+        ]
+      },
+      INTP: {
+        title: "模型拆解师",
+        subtitle: "先问原理，再谈体验",
+        description: "你更愿意理解系统为什么这样工作，适合靠分析、实验和抽象能力建立差异化。",
+        notes: [
+          ["结果说明", "适合模型平台、数据评测、开发者工具等方向，优势是能耐心拆 bug、拆边界、拆指标。"],
+          ["娱乐点评", "别人说“这个 AI 不稳定”，你脑内已经开始开分支：数据、模型、Prompt、上下文谁背锅。"]
+        ]
+      },
+      ENTP: {
+        title: "玩法实验家",
+        subtitle: "想法多，启动快",
+        description: "你适合从新场景、新交互、新工具链里找机会，用快速试错证明一个方向有没有戏。",
+        notes: [
+          ["结果说明", "适合 AI 应用产品、Agent、泛内容工具和增长实验，优势是能把模糊想法快速变成原型。"],
+          ["娱乐点评", "脑内常驻十个项目标题，最需要的不是灵感，而是挑一个先交付。"]
+        ]
+      },
+      INFJ: {
+        title: "场景洞察师",
+        subtitle: "会读人，也会读问题",
+        description: "你适合从用户情绪、真实场景和隐性需求里找产品切口，再把它翻译成清晰方案。",
+        notes: [
+          ["结果说明", "适合 AI 应用产品、教育/咨询类解决方案、用户研究型产品，优势是洞察细腻。"],
+          ["娱乐点评", "别人看到一句反馈，你能顺手补出用户的一天、一个卡点和一版功能优先级。"]
+        ]
+      },
+      ENFJ: {
+        title: "共创推动者",
+        subtitle: "能让人愿意一起做",
+        description: "你适合需要访谈、演示、共创和跨角色协作的方向，能把复杂方案讲到别人愿意配合。",
+        notes: [
+          ["结果说明", "适合行业解决方案、产品运营、ToB 项目推进，优势是沟通和组织协作。"],
+          ["娱乐点评", "你很容易成为项目里的接口人，大家嘴上说麻烦，最后还是会来问你下一步。"]
+        ]
+      },
+      INFP: {
+        title: "体验叙事师",
+        subtitle: "重视意义和体验感",
+        description: "你适合从内容、创作、教育、陪伴等场景切入，把 AI 能力做得更有温度和表达力。",
+        notes: [
+          ["结果说明", "适合 AI 创作、教育、内容工具、用户体验型应用产品，优势是能理解使用者的微妙感受。"],
+          ["娱乐点评", "你写需求不是冷冰冰列功能，更像在给用户安排一段顺滑的使用剧情。"]
+        ]
+      },
+      ENFP: {
+        title: "创意发起人",
+        subtitle: "热启动能力很强",
+        description: "你适合从新玩法、新人群、新传播方式里发现机会，但需要用结构和数据把热情落地。",
+        notes: [
+          ["结果说明", "适合 AI 应用、泛娱乐内容工具、社区运营和增长活动，优势是有感染力和启动速度。"],
+          ["娱乐点评", "开局很会点燃全场，进阶任务是把灵感整理成别人也能执行的 SOP。"]
+        ]
+      },
+      ISTJ: {
+        title: "数据质检官",
+        subtitle: "标准清楚，结果可靠",
+        description: "你适合有规范、有口径、有交付标准的岗位，能把混乱材料整理成可信结论。",
+        notes: [
+          ["结果说明", "适合数据评测、标注平台、质检体系、项目管理型产品，优势是稳、细、可复用。"],
+          ["娱乐点评", "你不是不浪漫，你只是希望每个结论都有出处，每个表格都别乱合并单元格。"]
+        ]
+      },
+      ESTJ: {
+        title: "落地推进官",
+        subtitle: "把事情按时做成",
+        description: "你适合节奏明确、需要协调和交付的岗位，能把计划拆成责任人、时间点和验收标准。",
+        notes: [
+          ["结果说明", "适合行业解决方案、项目推进、产品运营、商业化落地，优势是执行闭环强。"],
+          ["娱乐点评", "你的超能力是把一句“之后再说”翻译成“本周五前谁交什么”。"]
+        ]
+      },
+      ISFJ: {
+        title: "用户守护者",
+        subtitle: "关注细节和稳定体验",
+        description: "你适合对服务体验、流程细节和用户反馈负责的方向，能把小问题长期修到位。",
+        notes: [
+          ["结果说明", "适合 AI 产品运营、客服/教育/办公场景应用、体验优化，优势是耐心和服务意识。"],
+          ["娱乐点评", "你容易发现别人忽略的小卡点，属于能把产品从“能用”推到“好用”的类型。"]
+        ]
+      },
+      ESFJ: {
+        title: "社群连接官",
+        subtitle: "会照顾人，也会组织场",
+        description: "你适合用户运营、社群共创、活动推进和客户沟通强的岗位，能让用户持续参与。",
+        notes: [
+          ["结果说明", "适合 AI 产品运营、用户运营、训练营项目、解决方案交付，优势是连接人与维持节奏。"],
+          ["娱乐点评", "你很像项目里的气氛稳定器，能把冷场、拖延和信息差都慢慢拉回来。"]
+        ]
+      },
+      ISTP: {
+        title: "工具实干派",
+        subtitle: "少说一点，先搭出来",
+        description: "你适合工具链、Demo、自动化和技术产品方向，喜欢用可运行的东西证明判断。",
+        notes: [
+          ["结果说明", "适合 AI 工具、模型平台、内部效率产品、技术型应用产品，优势是动手和排障。"],
+          ["娱乐点评", "需求会不会成，先别开三轮会，你可能已经把第一版 Demo 跑起来了。"]
+        ]
+      },
+      ESTP: {
+        title: "增长冲锋派",
+        subtitle: "反应快，敢试指标",
+        description: "你适合节奏快、反馈快、指标清晰的方向，愿意用实验和结果说话。",
+        notes: [
+          ["结果说明", "适合增长、商业化、活动运营和轻量 AI 应用，优势是行动快、抗压强。"],
+          ["娱乐点评", "看到一个入口你会想：能不能测一下转化？看到一个按钮你会想：颜色要不要 A/B？"]
+        ]
+      },
+      ISFP: {
+        title: "体验打磨师",
+        subtitle: "关注手感和表达",
+        description: "你适合视觉、内容、创作、交互体验更重要的 AI 应用，把功能做得更自然。",
+        notes: [
+          ["结果说明", "适合 AI 创作工具、内容产品、轻量应用、体验优化，优势是审美和细节敏感度。"],
+          ["娱乐点评", "你会在别人觉得“差不多了”的地方，再顺手把文案、状态和动线磨顺一点。"]
+        ]
+      },
+      ESFP: {
+        title: "现场带动者",
+        subtitle: "会把产品变成活动",
+        description: "你适合内容、活动、社群和用户增长场景，能把 AI 产品做出参与感和传播感。",
+        notes: [
+          ["结果说明", "适合 AI 产品运营、泛娱乐应用、内容活动、用户增长，优势是表达和现场感。"],
+          ["娱乐点评", "你擅长把一个功能讲成大家愿意试的玩法，差一点就能直接写成活动方案。"]
+        ]
+      }
+    };
+
     const roles = [
       {
         id: "app",
@@ -1210,6 +1450,7 @@
           tech: 0.16,
           data: 0.13,
           communication: 0.13,
+          execution: 0.1,
           bizTrait: 0.1,
           exploreTrait: 0.08,
           growthTrait: 0.06,
@@ -1236,6 +1477,7 @@
         weights: {
           tech: 0.3,
           data: 0.21,
+          execution: 0.07,
           foundationTrait: 0.16,
           techTrait: 0.12,
           structureTrait: 0.09,
@@ -1264,6 +1506,7 @@
         weights: {
           data: 0.32,
           tech: 0.18,
+          execution: 0.12,
           dataTrait: 0.14,
           structureTrait: 0.13,
           foundationTrait: 0.1,
@@ -1292,6 +1535,7 @@
         weights: {
           communication: 0.29,
           business: 0.22,
+          execution: 0.12,
           peopleTrait: 0.13,
           structureTrait: 0.11,
           growthTrait: 0.08,
@@ -1320,6 +1564,7 @@
         weights: {
           business: 0.25,
           data: 0.18,
+          execution: 0.08,
           growthTrait: 0.18,
           communication: 0.12,
           bizTrait: 0.1,
@@ -1347,6 +1592,7 @@
         short: "产品运营",
         weights: {
           communication: 0.24,
+          execution: 0.18,
           structureTrait: 0.17,
           business: 0.15,
           peopleTrait: 0.13,
@@ -1448,8 +1694,8 @@
         return { missing };
       }
 
-      const dimRaw = { business: 0, tech: 0, data: 0, communication: 0 };
-      const dimMax = { business: 0, tech: 0, data: 0, communication: 0 };
+      const dimRaw = Object.fromEntries(Object.keys(dimLabels).map(dim => [dim, 0]));
+      const dimMax = Object.fromEntries(Object.keys(dimLabels).map(dim => [dim, 0]));
       const traits = {
         bizTrait: 0,
         techTrait: 0,
@@ -1507,7 +1753,8 @@
         traits: traitScores,
         signal,
         ranked,
-        typeCode: buildTypeCode(traitScores)
+        typeCode: buildTypeCode(traitScores),
+        persona: buildPersona(traitScores, dims)
       };
     }
 
@@ -1523,15 +1770,33 @@
       return `${first}-${second}-${third}-${fourth}`;
     }
 
+    function buildPersona(traits, dims) {
+      const external = (dims.communication + traits.peopleTrait) / 2;
+      const internal = (dims.tech + dims.data + traits.foundationTrait) / 3;
+      const intuition = (traits.exploreTrait + dims.business + traits.bizTrait) / 3;
+      const sensing = (traits.structureTrait + dims.execution + traits.dataTrait) / 3;
+      const thinking = (dims.data + dims.tech + traits.foundationTrait + traits.dataTrait) / 4;
+      const feeling = (dims.business + dims.communication + traits.peopleTrait + traits.bizTrait) / 4;
+      const judging = (dims.execution + traits.structureTrait) / 2;
+      const perceiving = traits.exploreTrait;
+      const code = [
+        external >= internal ? "E" : "I",
+        intuition >= sensing ? "N" : "S",
+        thinking >= feeling ? "T" : "F",
+        judging >= perceiving ? "J" : "P"
+      ].join("");
+      return { code, ...personas[code] };
+    }
+
     function renderResults(result) {
       const best = result.ranked[0];
       const second = result.ranked[1];
       const closeRace = second && best.score - second.score <= 5;
-      const readiness = Math.round((result.dims.business + result.dims.tech + result.dims.data + result.dims.communication) / 4);
+      const readiness = Math.round(Object.values(result.dims).reduce((sum, value) => sum + value, 0) / Object.values(result.dims).length);
 
-      document.getElementById("bestRole").textContent = closeRace ? `${best.name} / ${second.name}` : best.name;
+      document.getElementById("bestRole").textContent = best.name;
       document.getElementById("matchScore").textContent = best.score;
-      document.getElementById("typeCode").textContent = `类型：${result.typeCode} · 综合准备度 ${readiness}`;
+      document.getElementById("typeCode").textContent = `产品人格：${result.persona.code} · ${result.persona.title} · 综合准备度 ${readiness}`;
       document.getElementById("resultCopy").textContent = closeRace
         ? `你的前两项非常接近，建议用一个项目同时验证“${best.short}”和“${second.short}”。${best.summary}`
         : best.summary;
@@ -1540,9 +1805,10 @@
         .map(reason => `<li>${reason}</li>`)
         .join("");
 
+      renderRadar(result.dims);
       renderBars(result.dims);
       renderRanking(result.ranked);
-      renderActions(best, result);
+      renderPersona(result.persona);
       renderKeywords(best, second);
 
       results.classList.add("show");
@@ -1567,7 +1833,7 @@
     }
 
     function renderBars(dims) {
-      const order = ["business", "tech", "data", "communication"];
+      const order = Object.keys(dimLabels);
       document.getElementById("dimensionBars").innerHTML = order.map(dim => {
         const color = dimColors[dim];
         return `<div class="bar-row">
@@ -1575,6 +1841,45 @@
           <div class="bar-track"><div class="bar-fill ${color}" style="width:${dims[dim]}%"></div></div>
         </div>`;
       }).join("");
+    }
+
+    function renderRadar(dims) {
+      const order = Object.keys(dimLabels);
+      const cx = 150;
+      const cy = 136;
+      const radius = 72;
+      const pointsFor = scale => order.map((dim, index) => {
+        const angle = (-90 + index * 360 / order.length) * Math.PI / 180;
+        const valueRadius = radius * scale * ((dims[dim] || 0) / 100);
+        return [cx + Math.cos(angle) * valueRadius, cy + Math.sin(angle) * valueRadius];
+      });
+      const gridPoints = scale => order.map((dim, index) => {
+        const angle = (-90 + index * 360 / order.length) * Math.PI / 180;
+        const valueRadius = radius * scale;
+        return `${cx + Math.cos(angle) * valueRadius},${cy + Math.sin(angle) * valueRadius}`;
+      }).join(" ");
+      const dataPoints = pointsFor(1).map(point => point.join(",")).join(" ");
+      const axes = order.map((dim, index) => {
+        const angle = (-90 + index * 360 / order.length) * Math.PI / 180;
+        const x = cx + Math.cos(angle) * radius;
+        const y = cy + Math.sin(angle) * radius;
+        const labelX = cx + Math.cos(angle) * 105;
+        const labelY = cy + Math.sin(angle) * 105;
+        const scoreX = cx + Math.cos(angle) * 90;
+        const scoreY = cy + Math.sin(angle) * 90;
+        return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#d8dee8" stroke-width="1"/>
+          <text class="radar-label" x="${labelX}" y="${labelY}" text-anchor="middle" dominant-baseline="middle">${dimLabels[dim]}</text>
+          <text class="radar-score" x="${scoreX}" y="${scoreY}" text-anchor="middle" dominant-baseline="middle">${dims[dim]}</text>`;
+      }).join("");
+      document.getElementById("radarChart").innerHTML = `<svg viewBox="0 0 300 272" role="img" aria-label="五维能力雷达图">
+        <polygon points="${gridPoints(1)}" fill="#fff" stroke="#d8dee8" stroke-width="1.5"/>
+        <polygon points="${gridPoints(0.75)}" fill="none" stroke="#e8edf5" stroke-width="1"/>
+        <polygon points="${gridPoints(0.5)}" fill="none" stroke="#e8edf5" stroke-width="1"/>
+        <polygon points="${gridPoints(0.25)}" fill="none" stroke="#e8edf5" stroke-width="1"/>
+        ${axes}
+        <polygon points="${dataPoints}" fill="rgba(49, 87, 213, 0.2)" stroke="#3157d5" stroke-width="3" stroke-linejoin="round"/>
+        ${pointsFor(1).map(point => `<circle cx="${point[0]}" cy="${point[1]}" r="4.2" fill="#3157d5"/>`).join("")}
+      </svg>`;
     }
 
     function renderRanking(ranked) {
@@ -1586,17 +1891,12 @@
       }).join("");
     }
 
-    function renderActions(role, result) {
-      const sortedDims = Object.entries(result.dims).sort((a, b) => a[1] - b[1]);
-      const lowDim = sortedDims[0];
-      const gapAction = {
-        business: "补 1 页目标用户和业务场景说明，别只展示功能。",
-        tech: "补 1 页 AI 能力边界、工具链和 Demo 截图。",
-        data: "补 1 页样本、指标、评测口径或 bad case 表格。",
-        communication: "补 1 页推进记录、访谈纪要或方案汇报稿。"
-      };
-      const actions = [...role.actions, ["补强项", gapAction[lowDim[0]]]];
-      document.getElementById("actionList").innerHTML = actions.map(([title, text]) => {
+    function renderPersona(persona) {
+      document.getElementById("personaCode").textContent = persona.code;
+      document.getElementById("personaTitle").textContent = persona.title;
+      document.getElementById("personaSubtitle").textContent = persona.subtitle;
+      document.getElementById("personaDescription").textContent = persona.description;
+      document.getElementById("personaList").innerHTML = persona.notes.map(([title, text]) => {
         return `<li><strong>${title}</strong><span>${text}</span></li>`;
       }).join("");
     }
