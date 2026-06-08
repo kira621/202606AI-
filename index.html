@@ -141,7 +141,7 @@
       padding: 28px;
       min-height: 264px;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 210px;
+      grid-template-columns: minmax(0, 1fr);
       gap: 20px;
       overflow: hidden;
       position: relative;
@@ -212,35 +212,6 @@
 
     .button.secondary:hover {
       box-shadow: 0 12px 22px rgba(16, 24, 40, 0.08);
-    }
-
-    .hero-avatar {
-      align-self: center;
-      justify-self: end;
-      width: min(216px, 100%);
-      min-height: 226px;
-      display: grid;
-      place-items: center;
-      position: relative;
-    }
-
-    .hero-avatar::before {
-      content: "";
-      position: absolute;
-      inset: 22px 8px 8px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfcff;
-      box-shadow: 0 14px 30px rgba(29, 41, 57, 0.1);
-    }
-
-    .hero-avatar svg {
-      width: 100%;
-      max-width: 216px;
-      height: auto;
-      display: block;
-      position: relative;
-      z-index: 1;
     }
 
     .avatar-spark {
@@ -535,11 +506,30 @@
     }
 
     .result-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 188px auto;
+      gap: 18px;
+      align-items: center;
       margin-bottom: 18px;
+    }
+
+    .result-character {
+      width: 188px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      justify-self: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 18px 34px rgba(29, 41, 57, 0.12);
+    }
+
+    .result-character svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .role-name {
@@ -868,8 +858,12 @@
         grid-template-columns: 1fr;
       }
 
-      .hero-avatar {
-        justify-self: start;
+      .result-top {
+        grid-template-columns: minmax(0, 1fr) 160px auto;
+      }
+
+      .result-character {
+        width: 160px;
       }
     }
 
@@ -884,6 +878,15 @@
       .result-top {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .result-top {
+        grid-template-columns: 1fr;
+      }
+
+      .result-character {
+        justify-self: start;
+        width: min(190px, 100%);
       }
 
       .pill-row {
@@ -975,30 +978,6 @@
             </a>
           </div>
         </div>
-        <div class="hero-avatar" aria-hidden="true">
-          <svg viewBox="0 0 220 240" role="img">
-            <rect x="31" y="30" width="158" height="188" rx="8" fill="#fff" stroke="#d8dee8" stroke-width="2"/>
-            <path d="M49 77c22-31 81-43 121-9v96c-28 23-85 25-121-2V77z" fill="#eef7f6"/>
-            <path class="avatar-spark" d="M42 58l7 4 7-4-4 8 4 8-7-4-7 4 4-8-4-8z" fill="#f08a24"/>
-            <path class="avatar-spark delay" d="M172 51l6 3 6-3-3 7 3 7-6-3-6 3 3-7-3-7z" fill="#df5b67"/>
-            <path d="M72 163c6-28 20-43 39-43s34 15 40 43v28H72v-28z" fill="#3157d5"/>
-            <path d="M84 168h54v17H84z" fill="#1f2937" opacity=".14"/>
-            <circle cx="111" cy="98" r="42" fill="#ffd4ad" stroke="#1f2937" stroke-width="3"/>
-            <path d="M72 97c3-34 23-54 50-52 25 2 39 19 40 48-17-2-30-9-39-22-9 15-25 24-51 26z" fill="#19212a"/>
-            <path d="M74 98c1-17 5-31 13-40 0 17 13 29 38 36-13 7-30 8-51 4z" fill="#344054"/>
-            <circle cx="96" cy="104" r="4" fill="#19212a"/>
-            <circle cx="128" cy="104" r="4" fill="#19212a"/>
-            <path d="M99 123c8 7 18 7 27 0" fill="none" stroke="#19212a" stroke-width="4" stroke-linecap="round"/>
-            <circle cx="84" cy="115" r="5" fill="#ff9aa8" opacity=".75"/>
-            <circle cx="139" cy="115" r="5" fill="#ff9aa8" opacity=".75"/>
-            <rect x="59" y="149" width="52" height="38" rx="8" fill="#fff" stroke="#19212a" stroke-width="3"/>
-            <path d="M73 162h22M73 173h16" stroke="#0f9f8f" stroke-width="4" stroke-linecap="round"/>
-            <path d="M132 148l24 13-9 16-24-13 9-16z" fill="#f08a24" stroke="#19212a" stroke-width="3"/>
-            <path d="M126 163l-12 14 17-3" fill="#fff" stroke="#19212a" stroke-width="3" stroke-linejoin="round"/>
-            <rect x="82" y="181" width="76" height="20" rx="8" fill="#0f9f8f" stroke="#19212a" stroke-width="3"/>
-            <path d="M99 190h42" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-          </svg>
-        </div>
       </div>
       <aside class="hero-side" aria-label="测评摘要">
         <div class="metric-grid">
@@ -1063,6 +1042,7 @@
               <h3 class="role-name" id="bestRole">AI 应用产品经理</h3>
               <div class="type-code" id="typeCode">类型：B-D-S-G</div>
             </div>
+            <div class="result-character" id="resultCharacter" aria-hidden="true"></div>
             <div class="score-badge">
               <b id="matchScore">0</b>
               <span>岗位匹配分</span>
@@ -1659,22 +1639,22 @@
     };
 
     const personaAvatars = {
-      INTJ: { bg: "#eef7f6", shirt: "#3157d5", accent: "#0f9f8f", hair: "side", hairColor: "#19212a", prop: "map", mood: "focus" },
-      ENTJ: { bg: "#fff3e8", shirt: "#df5b67", accent: "#f08a24", hair: "slick", hairColor: "#2b1d1a", prop: "megaphone", mood: "bold" },
-      INTP: { bg: "#eef2ff", shirt: "#6d5bd0", accent: "#3157d5", hair: "messy", hairColor: "#293241", prop: "atom", mood: "calm" },
-      ENTP: { bg: "#fff8e6", shirt: "#f08a24", accent: "#df5b67", hair: "spike", hairColor: "#2d2b23", prop: "rocket", mood: "wink" },
-      INFJ: { bg: "#f2fbfa", shirt: "#0f9f8f", accent: "#3157d5", hair: "bob", hairColor: "#2f3542", prop: "magnifier", mood: "soft" },
-      ENFJ: { bg: "#fff0f3", shirt: "#df5b67", accent: "#0f9f8f", hair: "wave", hairColor: "#3a2d2a", prop: "chat", mood: "smile" },
-      INFP: { bg: "#f8f0ff", shirt: "#6d5bd0", accent: "#df5b67", hair: "bob", hairColor: "#2d2738", prop: "heart", mood: "soft" },
-      ENFP: { bg: "#fff7e8", shirt: "#f08a24", accent: "#6d5bd0", hair: "bun", hairColor: "#44322b", prop: "spark", mood: "wink" },
-      ISTJ: { bg: "#eef2f8", shirt: "#344054", accent: "#3157d5", hair: "neat", hairColor: "#1f2937", prop: "checklist", mood: "focus" },
-      ESTJ: { bg: "#eef7f0", shirt: "#2e9d66", accent: "#f08a24", hair: "slick", hairColor: "#27332d", prop: "flag", mood: "bold" },
-      ISFJ: { bg: "#fff4ed", shirt: "#df5b67", accent: "#3157d5", hair: "wave", hairColor: "#3a2d2a", prop: "shield", mood: "soft" },
-      ESFJ: { bg: "#fff0f3", shirt: "#f08a24", accent: "#df5b67", hair: "bun", hairColor: "#43302b", prop: "headset", mood: "smile" },
-      ISTP: { bg: "#eef7f6", shirt: "#0f9f8f", accent: "#3157d5", hair: "cap", hairColor: "#19212a", prop: "wrench", mood: "calm" },
-      ESTP: { bg: "#fff8e6", shirt: "#3157d5", accent: "#f08a24", hair: "spike", hairColor: "#263238", prop: "chart", mood: "bold" },
-      ISFP: { bg: "#f8f0ff", shirt: "#6d5bd0", accent: "#0f9f8f", hair: "bob", hairColor: "#332b3b", prop: "palette", mood: "soft" },
-      ESFP: { bg: "#fff3e8", shirt: "#df5b67", accent: "#f08a24", hair: "wave", hairColor: "#3a2d2a", prop: "mic", mood: "wink" }
+      INTJ: { bg: "#e8f7f4", shirt: "#3157d5", accent: "#0f9f8f", hair: "side", hairColor: "#243b8f", prop: "map", mood: "focus" },
+      ENTJ: { bg: "#fff1e5", shirt: "#df5b67", accent: "#f08a24", hair: "slick", hairColor: "#8a2f4d", prop: "megaphone", mood: "bold" },
+      INTP: { bg: "#eef2ff", shirt: "#6d5bd0", accent: "#3157d5", hair: "messy", hairColor: "#4d46a3", prop: "atom", mood: "calm" },
+      ENTP: { bg: "#fff8dc", shirt: "#f08a24", accent: "#df5b67", hair: "spike", hairColor: "#f08a24", prop: "rocket", mood: "wink" },
+      INFJ: { bg: "#e9fbf7", shirt: "#0f9f8f", accent: "#3157d5", hair: "bob", hairColor: "#0f766e", prop: "magnifier", mood: "soft" },
+      ENFJ: { bg: "#fff0f5", shirt: "#df5b67", accent: "#0f9f8f", hair: "wave", hairColor: "#d64f80", prop: "chat", mood: "smile" },
+      INFP: { bg: "#f6efff", shirt: "#6d5bd0", accent: "#df5b67", hair: "bob", hairColor: "#8b5cf6", prop: "heart", mood: "soft" },
+      ENFP: { bg: "#fff7e8", shirt: "#f08a24", accent: "#6d5bd0", hair: "bun", hairColor: "#ffb020", prop: "spark", mood: "wink" },
+      ISTJ: { bg: "#edf2f8", shirt: "#344054", accent: "#3157d5", hair: "neat", hairColor: "#334155", prop: "checklist", mood: "focus" },
+      ESTJ: { bg: "#edf9f1", shirt: "#2e9d66", accent: "#f08a24", hair: "slick", hairColor: "#15803d", prop: "flag", mood: "bold" },
+      ISFJ: { bg: "#fff4ed", shirt: "#df5b67", accent: "#3157d5", hair: "wave", hairColor: "#b45309", prop: "shield", mood: "soft" },
+      ESFJ: { bg: "#fff0f3", shirt: "#f08a24", accent: "#df5b67", hair: "bun", hairColor: "#fb7185", prop: "headset", mood: "smile" },
+      ISTP: { bg: "#e9fbf7", shirt: "#0f9f8f", accent: "#3157d5", hair: "cap", hairColor: "#0f172a", prop: "wrench", mood: "calm" },
+      ESTP: { bg: "#fff8dc", shirt: "#3157d5", accent: "#f08a24", hair: "spike", hairColor: "#0284c7", prop: "chart", mood: "bold" },
+      ISFP: { bg: "#f6efff", shirt: "#6d5bd0", accent: "#0f9f8f", hair: "bob", hairColor: "#a855f7", prop: "palette", mood: "soft" },
+      ESFP: { bg: "#fff1e5", shirt: "#df5b67", accent: "#f08a24", hair: "wave", hairColor: "#f97316", prop: "mic", mood: "wink" }
     };
 
     const roles = [
@@ -2261,19 +2241,28 @@
       const theme = personaAvatars[persona.code] || personaAvatars.INTJ;
       return `<svg viewBox="0 0 160 160" role="img" aria-label="${persona.code} ${persona.title} 卡通形象">
         <rect x="0" y="0" width="160" height="160" rx="8" fill="${theme.bg}"/>
-        <path d="M24 134c6-25 23-38 55-38s50 13 57 38v22H24v-22z" fill="${theme.shirt}" stroke="#19212a" stroke-width="3"/>
-        <circle cx="82" cy="67" r="36" fill="#ffd4ad" stroke="#19212a" stroke-width="3"/>
+        <circle cx="80" cy="76" r="61" fill="#fff" opacity=".58"/>
+        <circle cx="31" cy="118" r="11" fill="${theme.accent}" opacity=".18"/>
+        <circle cx="134" cy="55" r="9" fill="${theme.shirt}" opacity=".18"/>
+        <path class="avatar-spark" d="M22 35l6 4 7-4-4 8 4 8-7-4-6 4 3-8-3-8z" fill="${theme.accent}"/>
+        <path class="avatar-spark delay" d="M129 22l5 3 5-3-3 6 3 6-5-3-5 3 2-6-2-6z" fill="${theme.shirt}"/>
+        <ellipse cx="80" cy="149" rx="44" ry="7" fill="#19212a" opacity=".12"/>
+        <path d="M21 136c7-27 25-41 58-41 34 0 53 14 60 41v22H21v-22z" fill="${theme.shirt}" stroke="#19212a" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M63 99l17 18 17-18v22H63V99z" fill="#fff" opacity=".85"/>
+        <circle cx="82" cy="67" r="39" fill="#ffd4ad" stroke="#19212a" stroke-width="4"/>
         ${avatarHair(theme.hair, theme.hairColor)}
+        <path d="M61 42c11-10 28-13 43-4" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".25"/>
         <circle cx="57" cy="82" r="5" fill="#ff9aa8" opacity=".75"/>
         <circle cx="108" cy="82" r="5" fill="#ff9aa8" opacity=".75"/>
         ${avatarEyes(theme.mood)}
-        <rect x="106" y="12" width="43" height="23" rx="7" fill="#fff" stroke="#19212a" stroke-width="3"/>
-        <text x="127.5" y="28" text-anchor="middle" font-size="12" font-weight="900" fill="${theme.accent}">${persona.code}</text>
+        <rect x="105" y="10" width="45" height="25" rx="8" fill="#fff" stroke="#19212a" stroke-width="3"/>
+        <text x="127.5" y="27" text-anchor="middle" font-size="12" font-weight="900" fill="${theme.accent}">${persona.code}</text>
         ${avatarProp(theme.prop, theme.accent)}
       </svg>`;
     }
 
     function renderPersona(persona) {
+      document.getElementById("resultCharacter").innerHTML = createPersonaAvatar(persona);
       document.getElementById("personaAvatar").innerHTML = createPersonaAvatar(persona);
       document.getElementById("personaCode").textContent = persona.code;
       document.getElementById("personaTitle").textContent = persona.title;
