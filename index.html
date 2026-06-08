@@ -876,9 +876,10 @@
         </div>
       </div>
       <div class="pill-row" aria-label="测评标签">
-        <span class="pill">24 题</span>
+        <span class="pill">32 题</span>
         <span class="pill">6 类岗位</span>
         <span class="pill">5 维能力</span>
+        <span class="pill">背景分</span>
       </div>
     </nav>
 
@@ -886,7 +887,7 @@
       <div class="hero-main">
         <div class="hero-copy">
           <h1 id="heroTitle">测出你更适合的 AI 产品方向</h1>
-          <p class="lead">面向还没毕业、准备做 AI 产品项目和求职定位的同学。结果会给出岗位方向、匹配得分、产品人格、判断原因和轻量点评。</p>
+          <p class="lead">面向还没毕业、准备做 AI 产品项目和求职定位的同学。结果会给出岗位方向、匹配得分、产品人格、背景竞争力和轻量点评。</p>
           <div class="hero-actions">
             <a class="button" href="#assessment">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -919,7 +920,9 @@
         <div class="metric-grid">
           <div class="metric"><b>16</b><span>能力题</span></div>
           <div class="metric"><b>8</b><span>倾向题</span></div>
+          <div class="metric"><b>8</b><span>背景题</span></div>
           <div class="metric"><b>100</b><span>岗位匹配分</span></div>
+          <div class="metric"><b>100</b><span>背景竞争力</span></div>
           <div class="metric"><b>5</b><span>维能力图</span></div>
         </div>
         <p class="source-note">依据课程中的 AI 产品分类、AI 产品经理工作内容和五维自评框架设计。</p>
@@ -929,7 +932,7 @@
     <div class="progress-shell" aria-label="答题进度">
       <div class="progress-panel">
         <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="progress-text" id="progressText">已完成 0 / 24</div>
+        <div class="progress-text" id="progressText">已完成 0 / 32</div>
       </div>
     </div>
 
@@ -1024,13 +1027,31 @@
           <ul class="role-list" id="keywordList"></ul>
         </aside>
       </div>
+      <div class="result-grid" style="margin-top:16px;">
+        <div class="panel">
+          <p class="mini-title">硬背景竞争力</p>
+          <div class="persona-card">
+            <div class="persona-code" id="backgroundScore">0</div>
+            <div>
+              <strong class="persona-title" id="backgroundLevel">背景待评估</strong>
+              <span class="persona-subtitle" id="backgroundSubtitle">用于判断求职门槛，不代表能力上限</span>
+            </div>
+          </div>
+          <p class="result-copy" id="backgroundSummary"></p>
+          <ul class="persona-list" id="backgroundList"></ul>
+        </div>
+        <aside class="panel">
+          <p class="mini-title">综合判断</p>
+          <ul class="persona-list" id="fitList"></ul>
+        </aside>
+      </div>
     </section>
 
     <section class="rules" id="rules" aria-labelledby="rulesTitle">
       <details>
         <summary id="rulesTitle">测评题目与计分规则</summary>
         <div class="rules-body">
-          <p>题目由两部分组成：16 道能力量表题评估五个产品能力维度，8 道二选一倾向题生成类似 INTJ、ENTJ 的产品人格代码。岗位结果不是性格标签，而是用于校招项目选题、JD 匹配和简历证据准备。</p>
+          <p>题目由三部分组成：16 道能力量表题评估五个产品能力维度，8 道二选一倾向题生成类似 INTJ、ENTJ 的产品人格代码，8 道硬背景题评估求职门槛。岗位结果不是性格标签，而是用于校招项目选题、JD 匹配和简历证据准备。</p>
           <div class="rules-grid">
             <div class="rule-box">
               <h3>能力分</h3>
@@ -1047,6 +1068,10 @@
             <div class="rule-box">
               <h3>结果解释</h3>
               <p>系统展示得分最高的主推岗位、前 3 个备选岗位，并根据你的高分维度、低分缺口和产品人格生成原因与泛娱乐点评。</p>
+            </div>
+            <div class="rule-box">
+              <h3>背景竞争力</h3>
+              <p>学历、学校、专业、实习、AI 项目和材料完整度会形成 0-100 分背景分。它用于判断求职敲门砖强弱，不直接否定岗位兴趣匹配。</p>
             </div>
           </div>
           <table class="mapping-table" aria-label="岗位映射规则">
@@ -1290,6 +1315,102 @@
         tags: ["倾向", "G/F"],
         left: { label: "业务影响、结果闭环和岗位天花板", scores: { growthTrait: 1 } },
         right: { label: "专业深度、系统能力和长期壁垒", scores: { foundationTrait: 1 } }
+      },
+      {
+        id: "q25",
+        type: "single",
+        text: "你的最高学历或当前在读学历是？",
+        tags: ["硬背景", "学历"],
+        options: [
+          { label: "硕士/博士", value: "grad", score: 90 },
+          { label: "本科", value: "bachelor", score: 75 },
+          { label: "专科", value: "junior", score: 48 },
+          { label: "其他/暂不确定", value: "other", score: 35 }
+        ]
+      },
+      {
+        id: "q26",
+        type: "single",
+        text: "你的学校背景更接近哪一类？",
+        tags: ["硬背景", "学校"],
+        options: [
+          { label: "985/C9/头部海外院校", value: "top", score: 95 },
+          { label: "211/双一流/较好海外院校", value: "strong", score: 85 },
+          { label: "普通本科/普通海外院校", value: "normal", score: 65 },
+          { label: "专科/民办/独立学院", value: "basic", score: 45 }
+        ]
+      },
+      {
+        id: "q27",
+        type: "single",
+        text: "你的专业与 AI 产品岗位的相关度如何？",
+        tags: ["硬背景", "专业"],
+        options: [
+          { label: "计算机/AI/数据/软件等强相关", value: "tech_major", score: 92 },
+          { label: "工科/数理/统计/交互设计等较相关", value: "related_major", score: 78 },
+          { label: "商科/传媒/心理/管理等可迁移", value: "transfer_major", score: 66 },
+          { label: "暂时看不出明显相关", value: "weak_major", score: 48 }
+        ]
+      },
+      {
+        id: "q28",
+        type: "single",
+        text: "你目前有几段正式实习经历？",
+        tags: ["硬背景", "实习"],
+        options: [
+          { label: "3 段及以上", value: "three_plus", score: 92 },
+          { label: "2 段", value: "two", score: 78 },
+          { label: "1 段", value: "one", score: 58 },
+          { label: "暂无正式实习", value: "none", score: 30 }
+        ]
+      },
+      {
+        id: "q29",
+        type: "single",
+        text: "你是否有产品、运营、数据、用户研究或项目推进相关实习？",
+        tags: ["硬背景", "岗位相关"],
+        options: [
+          { label: "有 AI 产品/产品经理相关实习", value: "ai_pm", score: 96 },
+          { label: "有产品/运营/数据/用研相关实习", value: "related", score: 82 },
+          { label: "有互联网/科技公司其他岗位实习", value: "tech_other", score: 62 },
+          { label: "暂无相关实习", value: "none", score: 35 }
+        ]
+      },
+      {
+        id: "q30",
+        type: "single",
+        text: "你是否有大厂、知名 AI 公司或高成长创业公司的实习/项目经历？",
+        tags: ["硬背景", "平台"],
+        options: [
+          { label: "有大厂/头部 AI 公司实习", value: "big_factory", score: 96 },
+          { label: "有知名互联网/高成长创业公司经历", value: "known_company", score: 82 },
+          { label: "有中小公司或校企项目经历", value: "small_company", score: 58 },
+          { label: "暂无公司/项目平台背书", value: "none", score: 35 }
+        ]
+      },
+      {
+        id: "q31",
+        type: "single",
+        text: "你现在是否有能展示的 AI 项目、论文、竞赛或作品？",
+        tags: ["硬背景", "作品"],
+        options: [
+          { label: "有可演示 AI 项目/上线作品", value: "demo", score: 95 },
+          { label: "有 AI 论文/竞赛/课程项目", value: "paper_competition", score: 78 },
+          { label: "有普通产品/数据/运营项目", value: "normal_project", score: 62 },
+          { label: "暂无可展示作品", value: "none", score: 30 }
+        ]
+      },
+      {
+        id: "q32",
+        type: "single",
+        text: "你的求职材料准备到什么程度？",
+        tags: ["硬背景", "材料"],
+        options: [
+          { label: "有目标 JD、简历、项目文档和复盘", value: "complete", score: 92 },
+          { label: "有简历和项目，但还没对齐 JD", value: "partial", score: 72 },
+          { label: "只有简历，项目证据较少", value: "resume_only", score: 52 },
+          { label: "还没开始系统准备", value: "not_ready", score: 28 }
+        ]
       }
     ];
 
@@ -1628,8 +1749,9 @@
     function renderQuestions() {
       questionList.innerHTML = questions.map((q, index) => {
         const tags = q.tags.map(tag => `<span class="tag">${tag}</span>`).join("");
-        const controls = q.type === "likert"
-          ? `<div class="likert" role="radiogroup" aria-label="${escapeHtml(q.text)}">
+        let controls = "";
+        if (q.type === "likert") {
+          controls = `<div class="likert" role="radiogroup" aria-label="${escapeHtml(q.text)}">
               ${likertLabels.map((label, optionIndex) => {
                 const value = optionIndex + 1;
                 return `<label class="option">
@@ -1637,8 +1759,16 @@
                   <span>${value} · ${label}</span>
                 </label>`;
               }).join("")}
-            </div>`
-          : `<div class="choice-row" role="radiogroup" aria-label="${escapeHtml(q.text)}">
+            </div>`;
+        } else if (q.type === "single") {
+          controls = `<div class="choice-row" role="radiogroup" aria-label="${escapeHtml(q.text)}">
+              ${q.options.map((option, optionIndex) => `<label class="option">
+                <input type="radio" name="${q.id}" value="${option.value}" aria-label="${escapeHtml(option.label)}">
+                <span>${String.fromCharCode(65 + optionIndex)} · ${option.label}</span>
+              </label>`).join("")}
+            </div>`;
+        } else {
+          controls = `<div class="choice-row" role="radiogroup" aria-label="${escapeHtml(q.text)}">
               <label class="option">
                 <input type="radio" name="${q.id}" value="left" aria-label="${escapeHtml(q.left.label)}">
                 <span>A · ${q.left.label}</span>
@@ -1648,6 +1778,7 @@
                 <span>B · ${q.right.label}</span>
               </label>
             </div>`;
+        }
 
         return `<article class="question">
           <div class="question-number">${String(index + 1).padStart(2, "0")}</div>
@@ -1707,6 +1838,9 @@
         foundationTrait: 0
       };
       const traitMax = { ...traits };
+      let backgroundRaw = 0;
+      let backgroundMax = 0;
+      const backgroundAnswers = [];
 
       for (const question of questions) {
         const answer = answers[question.id];
@@ -1716,6 +1850,18 @@
             dimRaw[dim] += score * weight;
             dimMax[dim] += 4 * weight;
           });
+        } else if (question.type === "single") {
+          const selected = question.options.find(option => option.value === answer);
+          if (selected) {
+            backgroundRaw += selected.score;
+            backgroundMax += 100;
+            backgroundAnswers.push({
+              id: question.id,
+              text: question.text,
+              label: selected.label,
+              score: selected.score
+            });
+          }
         } else {
           const selected = answer === "left" ? question.left : question.right;
           Object.entries(selected.scores).forEach(([trait, amount]) => {
@@ -1754,7 +1900,8 @@
         signal,
         ranked,
         typeCode: buildTypeCode(traitScores),
-        persona: buildPersona(traitScores, dims)
+        persona: buildPersona(traitScores, dims),
+        background: buildBackground(backgroundRaw, backgroundMax, backgroundAnswers)
       };
     }
 
@@ -1788,6 +1935,34 @@
       return { code, ...personas[code] };
     }
 
+    function buildBackground(raw, max, answers) {
+      const score = max ? Math.round((raw / max) * 100) : 0;
+      const sorted = [...answers].sort((a, b) => a.score - b.score);
+      const weak = sorted.slice(0, 2);
+      const strong = [...answers].sort((a, b) => b.score - a.score).slice(0, 2);
+      let level = "先补证据";
+      let summary = "当前硬背景对直接冲 AI 产品岗的支撑偏弱，建议先用 AI 项目、相关实习或产品运营/数据岗位切入。";
+      let subtitle = "背景分偏低，重点补可见证据";
+      if (score >= 85) {
+        level = "强背景，可直接冲刺";
+        subtitle = "适合直接冲 AI 产品/平台/解决方案岗位";
+        summary = "你的学历、学校、实习或作品背书较强，适合直接把目标 JD、AI 项目和岗位关键词对齐，冲刺 AI 产品相关岗位。";
+      } else if (score >= 70) {
+        level = "可冲刺，材料决定上限";
+        subtitle = "适合冲 AI 产品，也要补项目表达";
+        summary = "你的硬背景已经具备一定竞争力，但最终能否过筛很看项目质量、简历关键词和面试表达。";
+      } else if (score >= 55) {
+        level = "可切入，先补强证据";
+        subtitle = "适合相关产品/运营/数据方向切入";
+        summary = "你的背景不算差，但直接冲 AI 产品岗可能需要更强证据。建议用 AI 项目、相关实习或作品集补足门槛。";
+      }
+      const notes = [
+        ["优势信号", strong.map(item => `${item.label}`).join("；") || "暂无明显高分项"],
+        ["优先补强", weak.map(item => `${item.label}`).join("；") || "继续保持当前准备节奏"]
+      ];
+      return { score, level, subtitle, summary, notes };
+    }
+
     function renderResults(result) {
       const best = result.ranked[0];
       const second = result.ranked[1];
@@ -1809,6 +1984,7 @@
       renderBars(result.dims);
       renderRanking(result.ranked);
       renderPersona(result.persona);
+      renderBackground(result.background, best);
       renderKeywords(best, second);
 
       results.classList.add("show");
@@ -1823,6 +1999,9 @@
         `你的最高能力维度是“${dimLabels[topDim[0]]}”（${topDim[1]} 分），这是 ${role.name} 的关键信号。`,
         ...role.reasons
       ];
+      if (result.background) {
+        reasons.push(`你的硬背景竞争力为 ${result.background.score} 分，属于“${result.background.level}”，建议把岗位选择和背景证据一起包装。`);
+      }
       if (second) {
         reasons.push(`备选方向“${second.name}”只低 ${role.score - second.score} 分，说明你可以用同一个项目做双方向包装。`);
       }
@@ -1901,6 +2080,38 @@
       }).join("");
     }
 
+    function renderBackground(background, bestRole) {
+      document.getElementById("backgroundScore").textContent = background.score;
+      document.getElementById("backgroundLevel").textContent = background.level;
+      document.getElementById("backgroundSubtitle").textContent = background.subtitle;
+      document.getElementById("backgroundSummary").textContent = background.summary;
+      document.getElementById("backgroundList").innerHTML = background.notes.map(([title, text]) => {
+        return `<li><strong>${title}</strong><span>${text}</span></li>`;
+      }).join("");
+
+      const fitItems = [
+        ["方向适配", `你的能力与兴趣更靠近“${bestRole.name}”，这是岗位方向判断。`],
+        ["背景门槛", `你的背景竞争力为 ${background.score} 分，决定的是简历过筛和可冲刺层级。`],
+        ["包装建议", buildFitAdvice(background.score, bestRole)]
+      ];
+      document.getElementById("fitList").innerHTML = fitItems.map(([title, text]) => {
+        return `<li><strong>${title}</strong><span>${text}</span></li>`;
+      }).join("");
+    }
+
+    function buildFitAdvice(score, bestRole) {
+      if (score >= 85) {
+        return `可以直接围绕“${bestRole.short}”准备目标 JD、项目复盘和面试故事，重点冲 AI 产品相关岗位。`;
+      }
+      if (score >= 70) {
+        return `可以冲“${bestRole.short}”，但要把 AI 项目、实习职责和结果指标写得更像岗位证据。`;
+      }
+      if (score >= 55) {
+        return `建议先用“${bestRole.short}”相关项目补证据，也可以同步投产品运营、数据产品或项目推进类岗位。`;
+      }
+      return "建议先补一个可演示 AI 项目和一段相关实习/校内项目经历，再把目标岗位逐步抬高。";
+    }
+
     function renderKeywords(best, second) {
       const combined = [...best.keywords, ...(second ? second.keywords.slice(0, 3) : [])];
       const unique = [...new Set(combined)].slice(0, 9);
@@ -1913,7 +2124,8 @@
       const role = document.getElementById("bestRole").textContent;
       const score = document.getElementById("matchScore").textContent;
       const code = document.getElementById("typeCode").textContent;
-      const text = `我的 AI 产品方向测评结果：${role}，岗位匹配分 ${score}，${code}`;
+      const background = document.getElementById("backgroundScore").textContent;
+      const text = `我的 AI 产品方向测评结果：${role}，岗位匹配分 ${score}，背景竞争力 ${background}，${code}`;
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {
           document.getElementById("copyBtn").lastChild.textContent = " 已复制";
