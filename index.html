@@ -447,6 +447,26 @@
       font-size: 14px;
     }
 
+    .text-answer {
+      width: 100%;
+      min-height: 112px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 12px;
+      font: inherit;
+      line-height: 1.5;
+      outline: none;
+      transition: border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .text-answer:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(49, 87, 213, 0.16);
+    }
+
     .submit-zone {
       display: flex;
       flex-wrap: wrap;
@@ -876,7 +896,7 @@
         </div>
       </div>
       <div class="pill-row" aria-label="测评标签">
-        <span class="pill">32 题</span>
+        <span class="pill">33 题</span>
         <span class="pill">6 类岗位</span>
         <span class="pill">5 维能力</span>
         <span class="pill">背景分</span>
@@ -887,7 +907,7 @@
       <div class="hero-main">
         <div class="hero-copy">
           <h1 id="heroTitle">测出你更适合的 AI 产品方向</h1>
-          <p class="lead">面向还没毕业、准备做 AI 产品项目和求职定位的同学。结果会给出岗位方向、匹配得分、产品人格、背景竞争力和轻量点评。</p>
+          <p class="lead">面向还没毕业、准备做 AI 产品项目和求职定位的同学。结果会给出岗位方向、匹配得分、产品人格、背景竞争力和你自己的选择。</p>
           <div class="hero-actions">
             <a class="button" href="#assessment">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -921,6 +941,7 @@
           <div class="metric"><b>16</b><span>能力题</span></div>
           <div class="metric"><b>8</b><span>倾向题</span></div>
           <div class="metric"><b>8</b><span>背景题</span></div>
+          <div class="metric"><b>1</b><span>自选题</span></div>
           <div class="metric"><b>100</b><span>岗位匹配分</span></div>
           <div class="metric"><b>100</b><span>背景竞争力</span></div>
           <div class="metric"><b>5</b><span>维能力图</span></div>
@@ -932,7 +953,7 @@
     <div class="progress-shell" aria-label="答题进度">
       <div class="progress-panel">
         <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="progress-text" id="progressText">已完成 0 / 32</div>
+        <div class="progress-text" id="progressText">已完成 0 / 33</div>
       </div>
     </div>
 
@@ -1041,7 +1062,7 @@
           <ul class="persona-list" id="backgroundList"></ul>
         </div>
         <aside class="panel">
-          <p class="mini-title">综合判断</p>
+          <p class="mini-title">最终选择对照</p>
           <ul class="persona-list" id="fitList"></ul>
         </aside>
       </div>
@@ -1051,7 +1072,7 @@
       <details>
         <summary id="rulesTitle">测评题目与计分规则</summary>
         <div class="rules-body">
-          <p>题目由三部分组成：16 道能力量表题评估五个产品能力维度，8 道二选一倾向题生成类似 INTJ、ENTJ 的产品人格代码，8 道硬背景题评估求职门槛。岗位结果不是性格标签，而是用于校招项目选题、JD 匹配和简历证据准备。</p>
+          <p>题目由四部分组成：16 道能力量表题评估五个产品能力维度，8 道二选一倾向题生成类似 INTJ、ENTJ 的产品人格代码，8 道硬背景题评估求职门槛，1 道开放题记录你自己的真实选择。岗位结果不是性格标签，而是用于校招项目选题、JD 匹配和简历证据准备。</p>
           <div class="rules-grid">
             <div class="rule-box">
               <h3>能力分</h3>
@@ -1072,6 +1093,10 @@
             <div class="rule-box">
               <h3>背景竞争力</h3>
               <p>学历、学校、专业、实习、AI 项目和材料完整度会形成 0-100 分背景分。它用于判断求职敲门砖强弱，不直接否定岗位兴趣匹配。</p>
+            </div>
+            <div class="rule-box">
+              <h3>自选方向</h3>
+              <p>最后一道开放题不参与打分，只在结果页展示。它用于对照系统推荐、产品人格和学生自己的真实意愿。</p>
             </div>
           </div>
           <table class="mapping-table" aria-label="岗位映射规则">
@@ -1411,6 +1436,13 @@
           { label: "只有简历，项目证据较少", value: "resume_only", score: 52 },
           { label: "还没开始系统准备", value: "not_ready", score: 28 }
         ]
+      },
+      {
+        id: "q33",
+        type: "text",
+        text: "你自己真正想做什么方向？（遵从自己的实际情况和内心选择）",
+        tags: ["自选方向", "内心选择"],
+        placeholder: "例如：我其实想做 AI 教育产品，因为我喜欢教学场景，也愿意先从产品运营/项目助理切入。"
       }
     ];
 
@@ -1760,6 +1792,8 @@
                 </label>`;
               }).join("")}
             </div>`;
+        } else if (q.type === "text") {
+          controls = `<textarea class="text-answer" name="${q.id}" maxlength="180" placeholder="${escapeHtml(q.placeholder)}" aria-label="${escapeHtml(q.text)}"></textarea>`;
         } else if (q.type === "single") {
           controls = `<div class="choice-row" role="radiogroup" aria-label="${escapeHtml(q.text)}">
               ${q.options.map((option, optionIndex) => `<label class="option">
@@ -1809,7 +1843,7 @@
 
     function updateProgress() {
       const answers = getAnswers();
-      const completed = Object.values(answers).filter(Boolean).length;
+      const completed = questions.filter(question => hasAnswer(answers[question.id])).length;
       const percent = Math.round((completed / questions.length) * 100);
       progressBar.style.width = `${percent}%`;
       progressText.textContent = `已完成 ${completed} / ${questions.length}`;
@@ -1820,7 +1854,7 @@
 
     function calculate() {
       const answers = getAnswers();
-      const missing = questions.filter(question => !answers[question.id]);
+      const missing = questions.filter(question => !hasAnswer(answers[question.id]));
       if (missing.length) {
         return { missing };
       }
@@ -1841,6 +1875,7 @@
       let backgroundRaw = 0;
       let backgroundMax = 0;
       const backgroundAnswers = [];
+      const selfChoice = String(answers.q33 || "").trim();
 
       for (const question of questions) {
         const answer = answers[question.id];
@@ -1862,6 +1897,8 @@
               score: selected.score
             });
           }
+        } else if (question.type === "text") {
+          continue;
         } else {
           const selected = answer === "left" ? question.left : question.right;
           Object.entries(selected.scores).forEach(([trait, amount]) => {
@@ -1901,8 +1938,13 @@
         ranked,
         typeCode: buildTypeCode(traitScores),
         persona: buildPersona(traitScores, dims),
-        background: buildBackground(backgroundRaw, backgroundMax, backgroundAnswers)
+        background: buildBackground(backgroundRaw, backgroundMax, backgroundAnswers),
+        selfChoice
       };
+    }
+
+    function hasAnswer(answer) {
+      return typeof answer === "string" ? answer.trim().length > 0 : Boolean(answer);
     }
 
     function clamp(value) {
@@ -1984,7 +2026,7 @@
       renderBars(result.dims);
       renderRanking(result.ranked);
       renderPersona(result.persona);
-      renderBackground(result.background, best);
+      renderBackground(result.background, best, result.persona, result.selfChoice);
       renderKeywords(best, second);
 
       results.classList.add("show");
@@ -2080,7 +2122,7 @@
       }).join("");
     }
 
-    function renderBackground(background, bestRole) {
+    function renderBackground(background, bestRole, persona, selfChoice) {
       document.getElementById("backgroundScore").textContent = background.score;
       document.getElementById("backgroundLevel").textContent = background.level;
       document.getElementById("backgroundSubtitle").textContent = background.subtitle;
@@ -2090,13 +2132,27 @@
       }).join("");
 
       const fitItems = [
-        ["方向适配", `你的能力与兴趣更靠近“${bestRole.name}”，这是岗位方向判断。`],
-        ["背景门槛", `你的背景竞争力为 ${background.score} 分，决定的是简历过筛和可冲刺层级。`],
-        ["包装建议", buildFitAdvice(background.score, bestRole)]
+        ["系统推荐", `更建议优先考虑“${bestRole.name}”。这是根据能力、倾向和背景综合算出的推荐方向。`],
+        ["产品人格", `${persona.code} · ${persona.title}。这代表你的做事风格和岗位适配方式。`],
+        ["你的选择", selfChoice],
+        ["对照建议", buildChoiceAdvice(selfChoice, bestRole, background.score)]
       ];
       document.getElementById("fitList").innerHTML = fitItems.map(([title, text]) => {
         return `<li><strong>${title}</strong><span>${text}</span></li>`;
       }).join("");
+    }
+
+    function buildChoiceAdvice(choice, bestRole, backgroundScore) {
+      const normalized = choice.toLowerCase();
+      const roleSignals = [bestRole.name, bestRole.short, ...bestRole.keywords].map(item => item.toLowerCase());
+      const aligned = roleSignals.some(signal => normalized.includes(signal.replace(/\s+/g, "").toLowerCase()) || normalized.includes(signal));
+      if (aligned) {
+        return `你的自选方向和系统推荐比较一致，可以把“${bestRole.short}”作为主线，集中准备一个强项目和一版岗位化简历。`;
+      }
+      if (backgroundScore >= 70) {
+        return `你的背景有一定支撑，即使自选方向和推荐不完全一致，也可以用一个项目做双包装：一版贴近“${bestRole.short}”，一版贴近你的真实兴趣。`;
+      }
+      return `如果自选方向和推荐不一致，先尊重你的兴趣，但建议用小项目快速验证，同时补足背景证据，别只靠热情硬冲。`;
     }
 
     function buildFitAdvice(score, bestRole) {
@@ -2125,7 +2181,8 @@
       const score = document.getElementById("matchScore").textContent;
       const code = document.getElementById("typeCode").textContent;
       const background = document.getElementById("backgroundScore").textContent;
-      const text = `我的 AI 产品方向测评结果：${role}，岗位匹配分 ${score}，背景竞争力 ${background}，${code}`;
+      const selfChoice = Array.from(document.querySelectorAll("#fitList li")).find(item => item.textContent.includes("你的选择"))?.querySelector("span")?.textContent || "";
+      const text = `我的 AI 产品方向测评结果：${role}，岗位匹配分 ${score}，背景竞争力 ${background}，${code}。我自己的选择：${selfChoice}`;
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {
           document.getElementById("copyBtn").lastChild.textContent = " 已复制";
@@ -2142,6 +2199,7 @@
     }
 
     form.addEventListener("change", updateProgress);
+    form.addEventListener("input", updateProgress);
     form.addEventListener("submit", event => {
       event.preventDefault();
       const result = calculate();
