@@ -1090,7 +1090,7 @@
           <h1 id="heroTitle">测试你的职场人格</h1>
           <p class="lead">面向未毕业、想转行、想尝试做AI相关岗位、不明确自己适合什么AI岗位的同学。结果会先给出 AI 产品可行性，再给出岗位方向、综合匹配分、职场人格和你自己的选择。</p>
           <div class="hero-actions">
-            <a class="button" href="#assessment">
+            <a class="button" href="#assessment" id="startAssessmentBtn">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -1251,6 +1251,8 @@
 
   <script>
     const ASSESSMENT_URL = "https://personality.kiraown.com/";
+    const ANALYTICS_ENDPOINT = "";
+    const ANALYTICS_SITE_ID = "workplace-personality";
 
     const dimLabels = {
       business: "用户/业务理解",
@@ -1267,6 +1269,59 @@
       communication: "rose",
       execution: "green"
     };
+
+    function getVisitorId() {
+      const key = "workplace_personality_visitor_id";
+      let visitorId = localStorage.getItem(key);
+      if (!visitorId) {
+        const randomPart = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        visitorId = `visitor-${randomPart}`;
+        localStorage.setItem(key, visitorId);
+      }
+      return visitorId;
+    }
+
+    function trackAnalyticsEvent(eventName, detail = {}) {
+      if (!ANALYTICS_ENDPOINT) return;
+      const payload = {
+        siteId: ANALYTICS_SITE_ID,
+        eventName,
+        visitorId: getVisitorId(),
+        path: location.pathname,
+        referrer: document.referrer || "",
+        userAgent: navigator.userAgent,
+        occurredAt: new Date().toISOString(),
+        detail
+      };
+      const body = JSON.stringify(payload);
+      if (navigator.sendBeacon) {
+        const sent = navigator.sendBeacon(ANALYTICS_ENDPOINT, new Blob([body], { type: "application/json" }));
+        if (sent) return;
+      }
+      fetch(ANALYTICS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+        mode: "cors",
+        keepalive: true
+      }).catch(() => {});
+    }
+
+    function buildAnalyticsResult(result) {
+      const best = result.ranked[0] || {};
+      return {
+        personaCode: result.persona.code,
+        personaTitle: result.persona.title,
+        topRole: best.name || "",
+        topRoleScore: best.score || 0,
+        feasibilityScore: result.background.score,
+        feasibilityLevel: result.background.level,
+        backgroundBaseScore: result.background.baseScore,
+        preparationScore: result.background.preparationScore,
+        dimensions: result.dims,
+        selfChoice: result.selfChoice || ""
+      };
+    }
 
     const questions = [
       {
@@ -2858,6 +2913,11 @@
       }
       alertBox.classList.remove("show");
       renderResults(result);
+      trackAnalyticsEvent("assessment_completed", buildAnalyticsResult(result));
+    });
+
+    document.getElementById("startAssessmentBtn").addEventListener("click", () => {
+      trackAnalyticsEvent("assessment_started");
     });
 
     document.getElementById("resetBtn").addEventListener("click", () => {
@@ -2873,6 +2933,7 @@
     renderQuestions();
     document.getElementById("heroAvatar").innerHTML = createPersonaAvatar({ code: "INTP", ...personas.INTP });
     updateProgress();
+    trackAnalyticsEvent("page_view");
   </script>
 </body>
 </html>

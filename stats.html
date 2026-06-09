@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>测评统计后台</title>
+  <style>
+    :root {
+      --ink: #18212b;
+      --muted: #667085;
+      --line: #d8dee8;
+      --paper: #fff;
+      --wash: #f5f7fb;
+      --blue: #3157d5;
+      --teal: #0f9f8f;
+      --violet: #6d5bd0;
+      --orange: #d9822b;
+      --rose: #c95464;
+      --shadow: 0 18px 48px rgba(29, 41, 57, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, .92) 0 18%, transparent 18% 100%),
+        linear-gradient(90deg, rgba(49, 87, 213, .05) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(15, 159, 143, .05) 1px, transparent 1px),
+        var(--wash);
+      background-size: 34px 34px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 48px;
+    }
+
+    .hero,
+    .panel,
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .94);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 7px;
+      background: linear-gradient(90deg, var(--blue), var(--teal), var(--orange), var(--rose));
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.08;
+    }
+
+    .lead {
+      max-width: 820px;
+      margin: 12px 0 0;
+      color: #344054;
+      font-size: 16px;
+    }
+
+    .setup {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(180px, 260px) auto;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    input {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 0 12px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: rgba(49, 87, 213, .72);
+      box-shadow: 0 0 0 3px rgba(49, 87, 213, .14);
+    }
+
+    .button {
+      min-height: 42px;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 16px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      color: var(--ink);
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 0;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .card {
+      padding: 18px;
+      box-shadow: none;
+    }
+
+    .card strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1;
+      color: var(--blue);
+    }
+
+    .card span {
+      display: block;
+      margin-top: 8px;
+      color: #475467;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .panel {
+      padding: 20px;
+      margin-top: 14px;
+    }
+
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 180px) minmax(0, 1fr) 58px;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .bar-label {
+      color: #344054;
+      font-weight: 850;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .bar-track {
+      height: 10px;
+      border-radius: 999px;
+      background: #e9eef6;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--teal), var(--blue));
+      transition: width .2s ease;
+    }
+
+    .bar-value {
+      color: var(--muted);
+      text-align: right;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      color: #344054;
+      background: #f7f9fc;
+      font-weight: 900;
+    }
+
+    td {
+      color: #475467;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .empty {
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .7);
+      font-weight: 700;
+    }
+
+    .note {
+      margin-top: 14px;
+      border-left: 4px solid var(--teal);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: #344054;
+      background: #eefaf8;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 860px) {
+      .setup,
+      .grid,
+      .columns {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>测评统计后台</h1>
+      <p class="lead">查看测评链接访问量、开始答题人数、完成人数、职场人格占比、主推岗位占比和 AI 产品可行性分层。页面不在测评入口展示，真实数据读取依赖受保护的统计接口。</p>
+      <div class="setup" aria-label="统计接口设置">
+        <input id="endpointInput" type="url" placeholder="统计接口地址，例如 https://stats-api.kiraown.com">
+        <input id="tokenInput" type="password" placeholder="只保存在本机的查询 token">
+        <button class="button" id="loadBtn" type="button">读取统计</button>
+      </div>
+      <div class="toolbar">
+        <button class="button secondary" id="saveBtn" type="button">保存到本机</button>
+        <button class="button secondary" id="clearBtn" type="button">清除本机配置</button>
+        <span class="status" id="statusText">等待配置统计接口。</span>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="核心指标">
+      <div class="card">
+        <strong id="pageViews">0</strong>
+        <span>打开测评链接</span>
+      </div>
+      <div class="card">
+        <strong id="uniqueVisitors">0</strong>
+        <span>独立访客</span>
+      </div>
+      <div class="card">
+        <strong id="starts">0</strong>
+        <span>开始答题</span>
+      </div>
+      <div class="card">
+        <strong id="completions">0</strong>
+        <span>完成答题</span>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="转化指标">
+      <div class="card">
+        <strong id="startRate">0%</strong>
+        <span>打开到开始率</span>
+      </div>
+      <div class="card">
+        <strong id="completionRate">0%</strong>
+        <span>开始到完成率</span>
+      </div>
+      <div class="card">
+        <strong id="topPersona">-</strong>
+        <span>最多职场人格</span>
+      </div>
+      <div class="card">
+        <strong id="topRole">-</strong>
+        <span>最多主推岗位</span>
+      </div>
+    </section>
+
+    <div class="columns">
+      <section class="panel">
+        <h2>职场人格占比</h2>
+        <div id="personaChart" class="empty">暂无数据。</div>
+      </section>
+      <section class="panel">
+        <h2>主推岗位占比</h2>
+        <div id="roleChart" class="empty">暂无数据。</div>
+      </section>
+    </div>
+
+    <div class="columns">
+      <section class="panel">
+        <h2>AI 产品可行性分层</h2>
+        <div id="feasibilityChart" class="empty">暂无数据。</div>
+      </section>
+      <section class="panel">
+        <h2>最近完成记录</h2>
+        <div id="recentTable" class="empty">暂无数据。</div>
+      </section>
+    </div>
+
+    <section class="panel">
+      <h2>接入说明</h2>
+      <div class="note">
+        这个页面不会在首页出现，也不会把查询 token 写进代码。真正的“仅本人可见”需要统计接口校验 token 或后台登录；仅靠 GitHub Pages 无法保护数据。推荐后续使用 stats.kiraown.com 或 api.kiraown.com 绑定一个轻量后端。
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const SITE_ID = "workplace-personality";
+    const STORAGE_ENDPOINT = "workplace_personality_stats_endpoint";
+    const STORAGE_TOKEN = "workplace_personality_stats_token";
+
+    const endpointInput = document.getElementById("endpointInput");
+    const tokenInput = document.getElementById("tokenInput");
+    const statusText = document.getElementById("statusText");
+
+    endpointInput.value = localStorage.getItem(STORAGE_ENDPOINT) || "";
+    tokenInput.value = localStorage.getItem(STORAGE_TOKEN) || "";
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      localStorage.setItem(STORAGE_ENDPOINT, endpointInput.value.trim());
+      localStorage.setItem(STORAGE_TOKEN, tokenInput.value.trim());
+      setStatus("已保存到本机。");
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_ENDPOINT);
+      localStorage.removeItem(STORAGE_TOKEN);
+      endpointInput.value = "";
+      tokenInput.value = "";
+      renderStats({});
+      setStatus("已清除本机配置。");
+    });
+
+    document.getElementById("loadBtn").addEventListener("click", loadStats);
+
+    function setStatus(text, isError = false) {
+      statusText.textContent = text;
+      statusText.style.color = isError ? "#c95464" : "#667085";
+    }
+
+    function statsUrl(endpoint, token) {
+      const clean = endpoint.trim().replace(/\/$/, "");
+      const url = new URL(clean.endsWith("/stats") ? clean : `${clean}/stats`);
+      url.searchParams.set("siteId", SITE_ID);
+      if (token) url.searchParams.set("token", token);
+      return url.toString();
+    }
+
+    async function loadStats() {
+      const endpoint = endpointInput.value.trim();
+      const token = tokenInput.value.trim();
+      if (!endpoint) {
+        setStatus("请先填写统计接口地址。", true);
+        return;
+      }
+      setStatus("正在读取统计数据...");
+      try {
+        const response = await fetch(statsUrl(endpoint, token), {
+          headers: token ? { "Authorization": `Bearer ${token}` } : {}
+        });
+        if (!response.ok) throw new Error(`接口返回 ${response.status}`);
+        const data = await response.json();
+        renderStats(normalizeStats(data));
+        setStatus(`已更新：${new Date().toLocaleString("zh-CN")}`);
+      } catch (error) {
+        setStatus(`读取失败：${error.message}`, true);
+      }
+    }
+
+    function normalizeStats(data = {}) {
+      const summary = data.summary || data;
+      const pageViews = Number(summary.pageViews || summary.views || 0);
+      const uniqueVisitors = Number(summary.uniqueVisitors || summary.visitors || 0);
+      const starts = Number(summary.starts || summary.assessmentStarts || 0);
+      const completions = Number(summary.completions || summary.completed || 0);
+      const personas = summary.personas || summary.personaDistribution || [];
+      const roles = summary.roles || summary.roleDistribution || [];
+      const feasibility = summary.feasibility || summary.feasibilityDistribution || [];
+      const recent = summary.recent || summary.recentCompletions || [];
+      return {
+        pageViews,
+        uniqueVisitors,
+        starts,
+        completions,
+        startRate: pageViews ? Math.round((starts / pageViews) * 100) : 0,
+        completionRate: starts ? Math.round((completions / starts) * 100) : 0,
+        personas,
+        roles,
+        feasibility,
+        recent
+      };
+    }
+
+    function renderStats(stats) {
+      const normalized = normalizeStats(stats);
+      setText("pageViews", normalized.pageViews);
+      setText("uniqueVisitors", normalized.uniqueVisitors);
+      setText("starts", normalized.starts);
+      setText("completions", normalized.completions);
+      setText("startRate", `${normalized.startRate}%`);
+      setText("completionRate", `${normalized.completionRate}%`);
+      setText("topPersona", topLabel(normalized.personas, "code"));
+      setText("topRole", topLabel(normalized.roles, "name"));
+      renderBars("personaChart", normalized.personas, item => `${item.code || item.label || "-"} ${item.title || ""}`.trim());
+      renderBars("roleChart", normalized.roles, item => item.name || item.label || "-");
+      renderBars("feasibilityChart", normalized.feasibility, item => item.level || item.label || "-");
+      renderRecent(normalized.recent);
+    }
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function topLabel(list, key) {
+      if (!Array.isArray(list) || !list.length) return "-";
+      const top = [...list].sort((a, b) => Number(b.count || 0) - Number(a.count || 0))[0];
+      return top[key] || top.label || "-";
+    }
+
+    function renderBars(id, list, labeler) {
+      const target = document.getElementById(id);
+      if (!Array.isArray(list) || !list.length) {
+        target.className = "empty";
+        target.textContent = "暂无数据。";
+        return;
+      }
+      const max = Math.max(...list.map(item => Number(item.count || 0)), 1);
+      target.className = "";
+      target.innerHTML = list.map(item => {
+        const count = Number(item.count || 0);
+        const percent = Number(item.percent || Math.round((count / max) * 100));
+        const width = Math.max(4, Math.round((count / max) * 100));
+        return `
+          <div class="bar-row">
+            <div class="bar-label" title="${escapeHtml(labeler(item))}">${escapeHtml(labeler(item))}</div>
+            <div class="bar-track"><div class="bar-fill" style="width:${width}%"></div></div>
+            <div class="bar-value">${count} / ${percent}%</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderRecent(list) {
+      const target = document.getElementById("recentTable");
+      if (!Array.isArray(list) || !list.length) {
+        target.className = "empty";
+        target.textContent = "暂无数据。";
+        return;
+      }
+      target.className = "";
+      target.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>人格</th>
+              <th>岗位</th>
+              <th>可行性</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${list.slice(0, 12).map(item => `
+              <tr>
+                <td>${escapeHtml(formatTime(item.occurredAt || item.createdAt || item.time || ""))}</td>
+                <td>${escapeHtml(item.personaCode || item.code || "-")}</td>
+                <td>${escapeHtml(item.topRole || item.role || "-")}</td>
+                <td>${escapeHtml(item.feasibilityLevel || item.level || "-")}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function formatTime(value) {
+      if (!value) return "-";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? value : date.toLocaleString("zh-CN");
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+  </script>
+</body>
+</html>
